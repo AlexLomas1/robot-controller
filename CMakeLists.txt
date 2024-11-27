@@ -41,7 +41,7 @@ pico_set_program_name(robot-controller "robot-controller")
 pico_set_program_version(robot-controller "0.1")
 
 # Modify the below lines to enable/disable output over UART/USB
-pico_enable_stdio_uart(robot-controller 0)
+pico_enable_stdio_uart(robot-controller 1)
 pico_enable_stdio_usb(robot-controller 0)
 
 # Add the standard library to the build
@@ -55,4 +55,3 @@ target_include_directories(robot-controller PRIVATE
 )
 
 pico_add_extra_outputs(robot-controller)
-
