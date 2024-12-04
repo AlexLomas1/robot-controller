@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include "pico/stdlib.h"
+#include "hardware/pwm.h"
 
 #define STEERING_MOTOR_PIN_1 3 // IN1 (Turn right)
 #define STEERING_MOTOR_PIN_2 4 // IN2 (Turn left)
@@ -15,11 +16,18 @@ void steering_motor_setup() {
     gpio_init(STEERING_MOTOR_PIN_2);
     gpio_set_dir(STEERING_MOTOR_PIN_2, GPIO_OUT);
 
-    // PWM setup will go here.
+    gpio_set_function(STEERING_MOTOR_PWM_PIN, GPIO_FUNC_PWM);
+    uint slice_num = pwm_gpio_to_slice_num(STEERING_MOTOR_PWM_PIN);
+    pwm_set_wrap(slice_num, 255); // Sets PWM range (0-255) to act as speed control for motor.
+    pwm_set_enabled(slice_num, true); // Enable PWM
 }
 
 void set_steering_speed(int new_speed) {
-    // This will use PWM for motor speed control
+    // Changes the speed value (0-255) of the motor.
+    // NOTE: testing has shown that current motor doesn't run at a new_speed value of
+    // below 80.
+    uint slice_num = pwm_gpio_to_slice_num(STEERING_MOTOR_PWM_PIN);
+    pwm_set_gpio_level(STEERING_MOTOR_PWM_PIN, new_speed);
 }
 
 void stop_steering() {
