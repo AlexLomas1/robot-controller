@@ -41,7 +41,7 @@ void steer_right(int turn_duration) {
     // Steers right.
     gpio_put(STEERING_MOTOR_PIN_1, 1);
     gpio_put(STEERING_MOTOR_PIN_2, 0);
-    set_steering_speed(); // Will set speed to a low (not yet determined) value for more precise turning
+    set_steering_speed(100); // Motor not set to full speed for more precise turning
     sleep_ms(turn_duration); // Turn duration used to change angle of rotation
     stop_steering();
 }
@@ -50,7 +50,21 @@ void steer_left(int turn_duration) {
     // Steers left.
     gpio_put(STEERING_MOTOR_PIN_1, 0);
     gpio_put(STEERING_MOTOR_PIN_2, 1);
-    set_steering_speed(); // Will set speed to a low (not yet determined) value for more precise turning
+    set_steering_speed(100); // Motor not set to full speed for more precise turning
     sleep_ms(turn_duration); // Turn duration used to change angle of rotation
     stop_steering();
+}
+
+void main() {
+    steering_motor_setup();
+    while (true) {
+        steer_right(10); // Turn right for 10ms
+        sleep_ms(1500);
+
+        steer_left(10); // Turn left for 10ms
+        sleep_ms(3000);
+
+        // PROBLEM: currently the motor steers more when steering right than left. This could be a 
+        // limitation with the motor itself.
+    }
 }
