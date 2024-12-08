@@ -41,7 +41,7 @@ void steer_right(int turn_duration) {
     // Steers right.
     gpio_put(STEERING_MOTOR_PIN_1, 1);
     gpio_put(STEERING_MOTOR_PIN_2, 0);
-    set_steer_speed(); // Will set speed to a low (not yet determined) value for more precise turning
+    set_steering_speed(); // Will set speed to a low (not yet determined) value for more precise turning
     sleep_ms(turn_duration); // Turn duration used to change angle of rotation
     stop_steering();
 }
@@ -50,7 +50,7 @@ void steer_left(int turn_duration) {
     // Steers left.
     gpio_put(STEERING_MOTOR_PIN_1, 0);
     gpio_put(STEERING_MOTOR_PIN_2, 1);
-    set_steer_speed(); // Will set speed to a low (not yet determined) value for more precise turning
+    set_steering_speed(); // Will set speed to a low (not yet determined) value for more precise turning
     sleep_ms(turn_duration); // Turn duration used to change angle of rotation
     stop_steering();
 }
