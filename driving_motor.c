@@ -51,6 +51,18 @@ int drive_forwards() {
     return new_speed;
 }
 
+int drive_backwards() {
+    // Turn on the driving motor in the backward direction, with the motor speed value 
+    // (0-255) initialised to 150.
+    gpio_put(MOTOR_A_PIN_1, 0);
+    gpio_put(MOTOR_A_PIN_2, 1);
+    set_motor_speed(150); // NOTE: testing has shown that current motor doesn't run at a 
+    // speed value of below 80.
+
+    int new_speed = 150;
+    return new_speed;
+}
+
 int accelerate(int current_speed) {
     // Increases motor speed value (0-255) by 10 if possible. Otherwise, motor speed value
     // will be increased to maximum, or an error message will be printed if already at maximum
