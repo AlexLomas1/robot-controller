@@ -40,13 +40,14 @@ int driving_motor_stop() {
 }
 
 int drive_forwards() {
-    // Turns on the driving motor, with the motor speed value (0-255) initialised to 80.
+    // Turns on the driving motor in the forward direction, with the motor speed value 
+    // (0-255) initialised to 150.
     gpio_put(MOTOR_A_PIN_1, 1);
     gpio_put(MOTOR_A_PIN_2, 0);
-    set_motor_speed(80); // NOTE: testing has shown that current motor doesn't run at a 
+    set_motor_speed(150); // NOTE: testing has shown that current motor doesn't run at a 
     // speed value of below 80.
 
-    int new_speed = 80; // Placeholder value, set to whatever default speed is.
+    int new_speed = 150; // Placeholder value, set to whatever default speed is.
     return new_speed;
 }
 
@@ -63,28 +64,33 @@ int accelerate(int current_speed) {
     else if (current_speed + 10 >= 255) {
         // Increase motor speed to 255.
         new_speed = 255;
+        set_motor_speed(255);
     }
     else {
         // Increase motor speed value by 10.
         new_speed += 10;
+        set_motor_speed(new_speed);
     }
     return new_speed;
 }
 
 int decelerate(int current_speed) {
-    // Decreases motor speed value (0-255) by 10 if possible, otherwise calls driving_stop().
+    // Decreases motor speed value (0-255) by 10 if possible, otherwise stops motor, or an error
+    // message will be printed if motor already stopped.
     int new_speed = current_speed;
     // Might be better to have constant to store the speed change intervals (e.g. at the
     // moment speed intervals is 10).
     if (current_speed == 0) {
         printf("Error: Motor speed already at zero.\n");
     }
-    else if (current_speed <= 10) {
+    else if (current_speed - 10 <= 0) {
+        // Stop motor.
         new_speed = driving_motor_stop();
     }
     else {
         // Decrease driving motor speed value by 10.
         new_speed -= 10;
+        set_motor_speed(new_speed);
     }
     return new_speed;
 }
@@ -94,7 +100,7 @@ int main() {
     driving_motor_setup();
 
     while (true) {
-        drive_forwards(); // Gives motor speed of 80
+        drive_forwards(); // Gives motor speed of 150
         sleep_ms(1000);
 
         driving_motor_stop();
