@@ -35,7 +35,7 @@ pico_sdk_init()
 
 # Add executable. Default name is the project name, version 0.1
 
-add_executable(robot-controller main.c )
+add_executable(robot-controller src/steering_motor.c)
 
 pico_set_program_name(robot-controller "robot-controller")
 pico_set_program_version(robot-controller "0.1")
@@ -45,8 +45,7 @@ pico_enable_stdio_uart(robot-controller 1)
 pico_enable_stdio_usb(robot-controller 0)
 
 # Add the standard library to the build
-target_link_libraries(robot-controller
-        pico_stdlib)
+target_link_libraries(robot-controller pico_stdlib hardware_pwm)
 
 # Add the standard include files to the build
 target_include_directories(robot-controller PRIVATE
