@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include "pico/stdlib.h"
+#include "../include/steering_motor.h"
 
 #define STEERING_MOTOR_PIN_1 3
 
@@ -48,7 +49,7 @@ void steer_left(int angle) {
     }
 }
 
-void main() {
+void test() {
     steering_motor_setup();
 
     // Test sequence.

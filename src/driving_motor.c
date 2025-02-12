@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include "pico/stdlib.h"
 #include "hardware/pwm.h"
+#include "../include/driving_motor.h"
 
 #define MOTOR_A_PIN_1 3 // IN1 (Forward for Motor A)
 #define MOTOR_A_PIN_2 4 // IN2 (Backward for Motor A)
@@ -52,7 +53,7 @@ void drive_backwards() {
     set_motor_speed(150); // Placeholder value.
 }
 
-int main() {
+int test() {
     // This is just a test sequence.
     driving_motor_setup();
 
