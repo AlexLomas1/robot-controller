@@ -13,11 +13,17 @@ void set_servo_angle(int pulse_width) {
     // A pulse is sent with a total length of 20ms. The pulse width (time it spends on) is changed
     // between 0.5 and 2.5ms (500 and 2500us). The pulse width determines the angle of the servo motor,
     // with 0.5ms as 90 degrees right, 1.5ms as 0 degrees, and 2.5ms as 90 degrees left.
-    gpio_put(STEERING_MOTOR_PIN_1, 1);
-    sleep_us(pulse_width); // us used instead of ms as sleep functions only take integer paramters, so 
-    // for example 0.5ms can't be done with sleep_ms
-    gpio_put(STEERING_MOTOR_PIN_1, 0);
-    sleep_us(20000 - pulse_width);
+
+    // Note that while only one pulse needs to be sent, sending multiple seems to make the angle 
+    // slightly more consistent.
+    int i;
+
+    for (i == 0; i <= 5; i++) {
+        gpio_put(STEERING_MOTOR_PIN_1, 1);
+        sleep_us(pulse_width); 
+        gpio_put(STEERING_MOTOR_PIN_1, 0);
+        sleep_us(20000 - pulse_width);
+    }
 }
 
 void steer_right(int angle) {
