@@ -1,2 +1,0 @@
-# Prevent CMake from appearing in repository language statistics.
-*.cmake linguist-detectable=false
