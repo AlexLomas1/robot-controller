@@ -26,7 +26,6 @@ void set_motor_speed(int new_speed) {
     // Changes the speed value (0-255) of the motor.
     // NOTE: testing has shown that current motor doesn't run at a new_speed value of
     // below 80. 
-    uint slice_num = pwm_gpio_to_slice_num(MOTOR_A_PWM_PIN);
     pwm_set_gpio_level(MOTOR_A_PWM_PIN, new_speed);
 }
 
