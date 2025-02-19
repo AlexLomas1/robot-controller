@@ -2,12 +2,12 @@
 #include "pico/stdlib.h"
 #include "../include/steering_motor.h"
 
-#define STEERING_MOTOR_PIN_1 3
+#define STEERING_MOTOR_PIN 10
 
 void steering_motor_setup() {
     // Sets up the servo motor used for steering.
-    gpio_init(STEERING_MOTOR_PIN_1);
-    gpio_set_dir(STEERING_MOTOR_PIN_1, GPIO_OUT);
+    gpio_init(STEERING_MOTOR_PIN);
+    gpio_set_dir(STEERING_MOTOR_PIN, GPIO_OUT);
 }
 
 void set_servo_angle(int pulse_width) {
@@ -20,9 +20,9 @@ void set_servo_angle(int pulse_width) {
     int i;
 
     for (i == 0; i <= 5; i++) {
-        gpio_put(STEERING_MOTOR_PIN_1, 1);
+        gpio_put(STEERING_MOTOR_PIN, 1);
         sleep_us(pulse_width); 
-        gpio_put(STEERING_MOTOR_PIN_1, 0);
+        gpio_put(STEERING_MOTOR_PIN, 0);
         sleep_us(20000 - pulse_width);
     }
 }
