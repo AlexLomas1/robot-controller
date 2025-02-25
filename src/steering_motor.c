@@ -27,6 +27,11 @@ void set_servo_angle(int pulse_width) {
     }
 }
 
+void centre_servo() {
+    // Centres the servo motor (0 degrees).
+    set_servo_angle(1500);
+}
+
 void steer_right(int angle) {
     // Note that angle is in terms of integer multiples of 11.25 degrees (e.g. 0 = 0 degrees, 2 = 22.5 
     // degrees), up to 8 (90 degrees).
@@ -53,7 +58,7 @@ void test() {
     steering_motor_setup();
 
     // Test sequence.
-    set_servo_angle(1500); // Sets servo to middle / neutral.
+    centre_servo();
     sleep_ms(1000);
 
     int i;
@@ -62,12 +67,12 @@ void test() {
         sleep_ms(250);
     }
 
-    set_servo_angle(1500);
+    centre_servo();
     sleep_ms(1000);
 
     for (i = 1; i <= 8; i += 1) {
         steer_right(i);
         sleep_ms(250);
     }
-    set_servo_angle(1500);
+    centre_servo();
 }
