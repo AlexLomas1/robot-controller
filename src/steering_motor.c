@@ -19,7 +19,7 @@ void set_servo_angle(int pulse_width) {
     // slightly more consistent.
     int i;
 
-    for (i == 0; i <= 5; i++) {
+    for (i = 0; i <= 5; i++) {
         gpio_put(STEERING_MOTOR_PIN, 1);
         sleep_us(pulse_width); 
         gpio_put(STEERING_MOTOR_PIN, 0);
