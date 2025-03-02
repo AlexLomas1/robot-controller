@@ -51,23 +51,3 @@ void drive_backwards() {
     gpio_put(MOTOR_A_PIN_2, 1);
     set_motor_speed(150); // Placeholder value.
 }
-
-int test() {
-    // This is just a test sequence.
-    driving_motor_setup();
-
-    while (true) {
-        drive_forwards(); // Gives motor speed of 150
-        sleep_ms(1000);
-
-        driving_motor_stop();
-        sleep_ms(2000);
-
-        drive_forwards();
-        set_motor_speed(255); // Maximum speed
-        sleep_ms(1000);
-
-        driving_motor_stop();
-        sleep_ms(2000);
-    }
-}

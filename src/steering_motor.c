@@ -53,26 +53,3 @@ void steer_left(int angle) {
         set_servo_angle(pulse_width);
     }
 }
-
-void test() {
-    steering_motor_setup();
-
-    // Test sequence.
-    centre_servo();
-    sleep_ms(1000);
-
-    int i;
-    for (i = 1; i <= 8; i += 1) {
-        steer_left(i);
-        sleep_ms(250);
-    }
-
-    centre_servo();
-    sleep_ms(1000);
-
-    for (i = 1; i <= 8; i += 1) {
-        steer_right(i);
-        sleep_ms(250);
-    }
-    centre_servo();
-}
