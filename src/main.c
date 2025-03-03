@@ -1,6 +1,5 @@
 #include <stdio.h>
 #include "pico/stdlib.h"
-#include "hardware/gpio.h"
 #include "../include/driving_motor.h" // Allows functions from driving_motor.c to be called here
 #include "../include/steering_motor.h" // Allows functions from steering_motor.c to be called here
 
@@ -44,24 +43,47 @@ int main() {
                 drive_backwards();
             }
 
+            else if (user_input == 99) { // ASCII value of c for change speed
+                int user_input = uart_getc(uart0);
+                int received_num = user_input - 48; // Recieves a number 0 to 9 based on its ASCII value
+                if (received_num >= 0 && received_num <= 9) {
+                    // Converts received num to a value 80-251, to cover most of the speed values (0-255,
+                    // but testing has shown that motor doesn't run at a speed of below 80).
+                    int new_speed = (received_num * 19) + 80;
+                    uart_puts(uart0, "Changing speed \n");
+                    set_motor_speed(new_speed);
+                }
+                else {
+                    uart_puts(uart0, "Invalid speed value\n");
+                }
+            }
+
             else if (user_input == 115) { // ASCII value of s for stop
                 uart_puts(uart0, "Stopping driving motor\n");
                 driving_motor_stop();
             }
 
             else if (user_input == 114) { // ASCII value of r for right
-                uart_puts(uart0, "Turning right\n");
-                for (i = 1; i <= 8; i += 1) {
-                    steer_right(i);
-                    sleep_ms(100);
+                int user_input = uart_getc(uart0);
+                int received_num = user_input - 48; // Recieves a number 0 to 8 based on its ASCII value
+                if (received_num >= 0 && received_num <= 8) {
+                    uart_puts(uart0, "Turning right\n");
+                    steer_right(received_num);
+                }
+                else {
+                    uart_puts(uart0, "Invalid steering magnitude\n");
                 }
             }
 
             else if (user_input == 108) { // ASCII value of l for left
-                uart_puts(uart0, "Turning left\n");
-                for (i = 1; i <= 8; i += 1) {
-                    steer_left(i);
-                    sleep_ms(100);
+                int user_input = uart_getc(uart0);
+                int received_num = user_input - 48; // Recieves a number 0 to 8 based on its ASCII value
+                if (received_num >= 0 && received_num <= 8) {
+                    uart_puts(uart0, "Turning left\n");
+                    steer_left(received_num);
+                }
+                else {
+                    uart_puts(uart0, "Invalid steering magnitude\n");
                 }
             }
 
@@ -75,5 +97,5 @@ int main() {
             }
         }
         sleep_ms(250); // Delay to prevent multiple actions being attempted at once.
-    }           
-}
+    }
+}          
