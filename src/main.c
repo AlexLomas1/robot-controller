@@ -28,51 +28,52 @@ int main() {
     uart_setup();
     uart_puts(uart0, "hello, world\n");
 
-    // This is a test sequence, will later be replaced with control based on user input through UART.
     int i;
     while (true) {
-        uart_puts(uart0, "Driving forwards\n");
-        drive_forwards();
-        sleep_ms(2000);
+        if (uart_is_readable(uart0)) {
+            // Reads input from UART
+            int user_input = uart_getc(uart0); // Gets the ASCII value of entered character.
 
-        uart_puts(uart0, "Maximum speed\n");
-        set_motor_speed(255);
-        sleep_ms(1000);
+            if (user_input == 102) { // ASCII value of f for forwards
+                uart_puts(uart0, "Driving forwards\n");
+                drive_forwards();
+            }
 
-        uart_puts(uart0, "Stopping driving motor\n");
-        driving_motor_stop();
-        sleep_ms(2000);
+            else if (user_input == 98) { // ASCII value of b for backwards
+                uart_puts(uart0, "Driving backwards\n");
+                drive_backwards();
+            }
 
-        uart_puts(uart0, "Driving backwards\n");
-        drive_backwards();
-        sleep_ms(2000);
+            else if (user_input == 115) { // ASCII value of s for stop
+                uart_puts(uart0, "Stopping driving motor\n");
+                driving_motor_stop();
+            }
 
-        uart_puts(uart0, "Maximum speed\n");
-        set_motor_speed(255);
-        sleep_ms(1000);
+            else if (user_input == 114) { // ASCII value of r for right
+                uart_puts(uart0, "Turning right\n");
+                for (i = 1; i <= 8; i += 1) {
+                    steer_right(i);
+                    sleep_ms(100);
+                }
+            }
 
-        uart_puts(uart0, "Stopping driving motor\n");
-        driving_motor_stop();
-        sleep_ms(2000);
+            else if (user_input == 108) { // ASCII value of l for left
+                uart_puts(uart0, "Turning left\n");
+                for (i = 1; i <= 8; i += 1) {
+                    steer_left(i);
+                    sleep_ms(100);
+                }
+            }
 
-        uart_puts(uart0, "Turning left\n");
-        for (i = 1; i <= 8; i += 1) {
-            steer_left(i);
-            sleep_ms(250);
+            else if (user_input == 109) { // ASCII value of m for middle
+                uart_puts(uart0, "Returning to neutral steering\n");
+                steer_left(0);
+            }
+
+            else {
+                uart_puts(uart0, "Unknown input\n");
+            }
         }
-
-        uart_puts(uart0, "Returning to neutral steering\n");
-        centre_servo();
-        sleep_ms(500);
-
-        uart_puts(uart0, "Turning right\n");
-        for (i = 1; i <= 8; i += 1) {
-            steer_right(i);
-            sleep_ms(250);
-        }
-
-        uart_puts(uart0, "Returning to neutral steering\n");
-        centre_servo();
-        sleep_ms(5000);
-    }
+        sleep_ms(250); // Delay to prevent multiple actions being attempted at once.
+    }           
 }
