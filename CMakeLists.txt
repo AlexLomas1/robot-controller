@@ -35,7 +35,7 @@ pico_sdk_init()
 
 # Add executable. Default name is the project name, version 0.1
 
-add_executable(robot-controller src/steering_motor.c)
+add_executable(robot-controller src/main.c src/driving_motor.c src/steering_motor.c)
 
 pico_set_program_name(robot-controller "robot-controller")
 pico_set_program_version(robot-controller "0.1")
