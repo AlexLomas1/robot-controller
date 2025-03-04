@@ -16,10 +16,10 @@ void set_servo_angle(int pulse_width) {
     // with 0.5ms as 90 degrees right, 1.5ms as 0 degrees, and 2.5ms as 90 degrees left.
 
     // Note that while only one pulse needs to be sent, sending multiple seems to make the angle 
-    // slightly more consistent.
+    // more consistent, especially when moving over larger angles in one go.
     int i;
 
-    for (i = 0; i <= 5; i++) {
+    for (i = 0; i <= 10; i+= 1) {
         gpio_put(STEERING_MOTOR_PIN, 1);
         sleep_us(pulse_width); 
         gpio_put(STEERING_MOTOR_PIN, 0);
