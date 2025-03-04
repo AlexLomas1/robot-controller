@@ -16,16 +16,17 @@ void uart_setup() {
     gpio_set_function(1, GPIO_FUNC_UART);
 }
 
-int main() {
-    // To do: could potentially call all the initialising functions from a master_setup() function.
-    // Also: could change function names to use init instead of setup (e.g. driving_motor_init), as this
-    // seems to be the standard (such as with stdio_init_all, gpio_init) - only problem is that the name
-    // uart_init is already in use.
+void master_setup() {
+    // Calls all relevent setup/initialisation functions
     stdio_init_all();
     driving_motor_setup();
     steering_motor_setup();
     uart_setup();
     uart_puts(uart0, "hello, world\n");
+}
+
+int main() {
+    master_setup();
     int user_input, received_num, i;
 
     while (true) {
