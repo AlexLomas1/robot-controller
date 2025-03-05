@@ -27,31 +27,33 @@ void master_setup() {
 
 int main() {
     master_setup();
-    int user_input, received_num, i;
+    int received_value, user_input_num;
+    char user_input_char;
 
     while (true) {
         if (uart_is_readable(uart0)) {
-            // Reads input from UART
-            user_input = uart_getc(uart0); // Gets the ASCII value of entered character.
+            // Reads input from UART.
+            received_value = uart_getc(uart0); // Gets the ASCII value of entered character.
+            user_input_char = received_value; // Converts ASCII value back to character.
 
-            switch (user_input) {
-                case 102: // ASCII value of f - Drive forwards
+            switch (user_input_char) {
+                case 'f': // Drive forwards
                     uart_puts(uart0, "Driving forwards\n");
                     drive_forwards();
                     break;
                 
-                case 98: // ASCII value of b - Drive backwards
+                case 'b': // Drive backwards
                     uart_puts(uart0, "Driving backwards\n");
                     drive_backwards();
                     break;
 
-                case 99: // ASCII value of c - Change speed
-                    user_input = uart_getc(uart0);
-                    received_num = user_input - 48; // Recieves a number 0 to 9 based on its ASCII value
-                    if (received_num >= 0 && received_num <= 9) {
+                case 'c': // Change speed
+                    received_value = uart_getc(uart0);
+                    user_input_num = received_value - 48; // Recieves a number 0 to 9 based on its ASCII value
+                    if (user_input_num >= 0 && user_input_num <= 9) {
                         // Converts received num to a value 80-251, to cover most of the speed values (0-255,
                         // but testing has shown that motor doesn't run at a speed of below 80).
-                        int new_speed = (received_num * 19) + 80;
+                        int new_speed = (user_input_num * 19) + 80;
                         uart_puts(uart0, "Changing speed \n");
                         set_motor_speed(new_speed);
                     }
@@ -60,36 +62,36 @@ int main() {
                     } 
                     break;
                 
-                case 115: // ASCII value of s - Stop driving
+                case 's': // Stop driving
                     uart_puts(uart0, "Stopping driving motor\n");
                     driving_motor_stop();
                     break;
 
-                case 114: // ASCII value of r - Turn right
-                    user_input = uart_getc(uart0);
-                    received_num = user_input - 48; // Recieves a number 0 to 8 based on its ASCII value
-                    if (received_num >= 0 && received_num <= 8) {
+                case 'r': // Turn right
+                    received_value = uart_getc(uart0);
+                    user_input_num = received_value - 48; // Recieves a number 0 to 8 based on its ASCII value
+                    if (user_input_num >= 0 && user_input_num <= 8) {
                         uart_puts(uart0, "Turning right\n");
-                        steer_right(received_num);
+                        steer_right(user_input_num);
                     }
                     else {
                         uart_puts(uart0, "Invalid steering magnitude\n");
                     }
                     break;
                     
-                case 108: // ASCII value of l - Turn left
-                    user_input = uart_getc(uart0);
-                    received_num = user_input - 48; // Recieves a number 0 to 8 based on its ASCII value
-                    if (received_num >= 0 && received_num <= 8) {
+                case 'l': // Turn left
+                    received_value = uart_getc(uart0);
+                    user_input_num = received_value - 48; // Recieves a number 0 to 8 based on its ASCII value
+                    if (user_input_num >= 0 && user_input_num <= 8) {
                         uart_puts(uart0, "Turning left\n");
-                        steer_left(received_num);
+                        steer_left(user_input_num);
                     }
                     else {
                         uart_puts(uart0, "Invalid steering magnitude\n");
                     }
                     break;
 
-                case 109: // ASCII value of m - Centres servo
+                case 'm': // Centres servo
                     uart_puts(uart0, "Returning to neutral steering\n");
                     centre_servo();
                     break;
