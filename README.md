@@ -38,6 +38,7 @@ The angle θ corresponds to (θ x 11.25)°, so the servo can move from 90° left
 ### Prerequisites
 Before installing, ensure you have:
 * The [Raspberry Pi Pico SDK](https://github.com/raspberrypi/pico-sdk) installed and set up. 
+* CMake, which can be downloaded from [cmake.org](https://cmake.org/).
 * Picotool, for which a pre-built binary can be downloaded from [Pico SDK tools](https://github.com/raspberrypi/pico-sdk-tools).
 
 ### Clone the repository
