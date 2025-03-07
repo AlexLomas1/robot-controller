@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include "pico/stdlib.h"
 #include "hardware/pwm.h"
-#include "../include/driving_motor.h"
+#include "../include/driving_motors.h"
 
 #define MOTOR_A_PIN_1 2 // Forwards for Motor A
 #define MOTOR_A_PIN_2 3 // Backwards for Motor A
@@ -11,7 +11,7 @@
 #define MOTOR_B_PIN_2 5 // Backwards for Motor B
 #define MOTOR_B_PWM_PIN 15 // PWM Control for Motor B
 
-void driving_motor_setup() {
+void driving_motors_setup() {
     // Sets up the driving motors.
     
     gpio_init(MOTOR_A_PIN_1);
@@ -45,7 +45,7 @@ void set_motor_speed(int new_speed) {
     pwm_set_gpio_level(MOTOR_B_PWM_PIN, new_speed);
 }
 
-void driving_motor_stop() {
+void driving_stop() {
     // Stops driving motors.
     gpio_put(MOTOR_A_PIN_1, 0);
     gpio_put(MOTOR_A_PIN_2, 0);

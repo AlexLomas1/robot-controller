@@ -1,8 +1,8 @@
-void driving_motor_setup(); // Sets up the driving motor.
+void driving_motors_setup(); // Sets up the driving motors.
 
 void set_motor_speed(); // Sets the motor speed to a value 0-255.
 
-void driving_motor_stop(); // Stops the driving motor.
+void driving_stop(); // Stops the driving motors.
 
 void drive_forwards(); // Turns on the driving motors in the forward direction.
 

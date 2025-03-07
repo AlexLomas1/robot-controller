@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include "pico/stdlib.h"
-#include "../include/driving_motor.h" // Allows functions from driving_motor.c to be called here
+#include "../include/driving_motors.h" // Allows functions from driving_motor.c to be called here
 #include "../include/steering_motor.h" // Allows functions from steering_motor.c to be called here
 
 void uart_setup() {
@@ -19,7 +19,7 @@ void uart_setup() {
 void master_setup() {
     // Calls all relevent setup/initialisation functions
     stdio_init_all();
-    driving_motor_setup();
+    driving_motors_setup();
     steering_motor_setup();
     uart_setup();
     uart_puts(uart0, "hello, world\n");
@@ -63,8 +63,8 @@ int main() {
                     break;
                 
                 case 's': // Stop driving
-                    uart_puts(uart0, "Stopping driving motor\n");
-                    driving_motor_stop();
+                    uart_puts(uart0, "Stopping driving motors\n");
+                    driving_stop();
                     break;
 
                 case 'r': // Turn right
