@@ -23,6 +23,14 @@ void set_servo_angle(int pulse_width) {
     // between 0.5 and 2.5ms (500 and 2500us). The pulse width determines the angle of the servo motor,
     // with 0.5ms as 90 degrees right, 1.5ms as 0 degrees, and 2.5ms as 90 degrees left.
 
+    // Pulse width validation.
+    if (pulse_width < 500) {
+        pulse_width = 500;
+    }
+    else if (pulse_width > 2500) {
+        pulse_width = 2500;
+    }
+
     uint slice_num = pwm_gpio_to_slice_num(STEERING_MOTOR_PIN);
     // Pulse width (us) is converted to PWM level. As PWM wrap value is 39062, full 20ms period is
     // 39062, so PWM level is calculated as below.
