@@ -1,4 +1,3 @@
-#include <stdio.h>
 #include "pico/stdlib.h"
 #include "../include/driving_motors.h" // Allows functions from driving_motor.c to be called here
 #include "../include/steering_motor.h" // Allows functions from steering_motor.c to be called here
@@ -18,7 +17,6 @@ void uart_setup() {
 
 void master_setup() {
     // Calls all relevent setup/initialisation functions
-    stdio_init_all();
     driving_motors_setup();
     steering_motor_setup();
     uart_setup();
