@@ -2,21 +2,27 @@
 #include "../include/driving_motors.h" // Allows functions from driving_motor.c to be called here
 #include "../include/steering_motor.h" // Allows functions from steering_motor.c to be called here
 
+#define TX_PIN 0
+#define RX_PIN 1
+
 void uart_setup() {
     // Sets up the UART instance.
-    // Initialise the UART to a baud rate of 115200.
+    // Initialises the UART to a baud rate of 115200.
     uart_init(uart0, 115200);
+    /* Note that some GPIO pins that support UART TX/RX use uart1 instead. You can see which at pages
+    145-150 of https://datasheets.raspberrypi.com/pico/raspberry-pi-pico-c-sdk.pdf */
 
-    // Initialise pins used for UART communication.
-    gpio_init(0); // TX Pin
+    // Initialises GPIO pins used for UART communication.
+    gpio_init(TX_PIN);
     gpio_set_function(0, GPIO_FUNC_UART);
 
-    gpio_init(1); // RX Pin
+    gpio_init(RX_PIN); 
     gpio_set_function(1, GPIO_FUNC_UART);
 }
 
 void master_setup() {
-    // Calls all relevent setup/initialisation functions
+    /* Initialises the main subsystems of the robot, including the driving motors, the steering motor,
+    and the UART instance. */
     driving_motors_setup();
     steering_motor_setup();
     uart_setup();
@@ -45,12 +51,13 @@ int main() {
                     drive_backwards();
                     break;
 
-                case 'c': // Change speed
+                case 'c': // Change driving motors' speed
                     received_value = uart_getc(uart0);
-                    user_input_num = received_value - 48; // Recieves a number 0 to 9 based on its ASCII value
-                    if (user_input_num >= 0 && user_input_num <= 9) {
-                        // Converts received num to a value 80-251, to cover most of the speed values (0-255,
-                        // but testing has shown that motor doesn't run at a speed of below 80).
+                    user_input_num = received_value - 48; // Converts ASCII '0'-'9' to integer 0-9.
+                    if (user_input_num >= 0 && user_input_num <= 9) { // Input validation
+                        /* Maps input value (0-9) to a motor speed (80-251). This covers most of the 
+                        effective motor speed range (0-255), as testing has shown that motor doesn't
+                        run at speeds of below 80. */
                         int new_speed = (user_input_num * 19) + 80;
                         uart_puts(uart0, "Changing speed \n");
                         set_motor_speed(new_speed);
@@ -60,16 +67,17 @@ int main() {
                     } 
                     break;
                 
-                case 's': // Stop driving
+                case 's': // Stop driving motors
                     uart_puts(uart0, "Stopping driving motors\n");
                     driving_stop();
                     break;
 
                 case 'r': // Turn right
                     received_value = uart_getc(uart0);
-                    user_input_num = received_value - 48; // Recieves a number 0 to 8 based on its ASCII value
-                    if (user_input_num >= 0 && user_input_num <= 8) {
+                    user_input_num = received_value - 48; // Converts ASCII '0'-'8' to integer 0-8.
+                    if (user_input_num >= 0 && user_input_num <= 8) { // Input validation
                         uart_puts(uart0, "Turning right\n");
+                        // Steers to the right by the given number of steps of 11.25°.
                         steer_right(user_input_num);
                     }
                     else {
@@ -79,9 +87,10 @@ int main() {
                     
                 case 'l': // Turn left
                     received_value = uart_getc(uart0);
-                    user_input_num = received_value - 48; // Recieves a number 0 to 8 based on its ASCII value
-                    if (user_input_num >= 0 && user_input_num <= 8) {
+                    user_input_num = received_value - 48; // Converts ASCII '0'-'8' to integer 0-8.
+                    if (user_input_num >= 0 && user_input_num <= 8) { // Input validation
                         uart_puts(uart0, "Turning left\n");
+                        // Steers to the left by the given number of steps of 11.25°.
                         steer_left(user_input_num);
                     }
                     else {
@@ -94,7 +103,7 @@ int main() {
                     centre_servo();
                     break;
                     
-                default:
+                default: // In case of an invalid command.
                     uart_puts(uart0, "Unknown input\n");
             }
             sleep_ms(250); // Delay to prevent multiple actions being attempted at once.
