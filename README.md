@@ -27,11 +27,11 @@ Note: the commands should be written without the square brackets - e.g. c2,  not
 
 ### Motor speed calculation
 
-The actual motor speed (0-255) is calculated by (v x 19) + 80. This gives a value between 80 and 251, as testing has shown that the DC motors don't operate at a speed of below 80.
+The actual motor speed (0-255) is calculated by (v * 19) + 80. This gives a value between 80 and 251, as testing has shown that the DC motors don't operate at a speed of below 80.
 
 ### Servo angle calculation
 
-The angle θ corresponds to (θ x 11.25)°, so the servo can move from 90° left to 90° right in 11.25° increments. Given that most servo motors are not that precise, the actual angle may vary.
+The angle θ corresponds to (θ * 11.25)°, so the servo can move from 90° left to 90° right in 11.25° increments. Given that most servo motors are not that precise, the actual angle may vary.
 
 ## Installation and Usage
 
@@ -39,31 +39,25 @@ The angle θ corresponds to (θ x 11.25)°, so the servo can move from 90° left
 Before installing, ensure you have:
 * The [Raspberry Pi Pico SDK](https://github.com/raspberrypi/pico-sdk) installed and set up. 
 * CMake, which can be downloaded from [cmake.org](https://cmake.org/).
-* Picotool, for which a pre-built binary can be downloaded from [Pico SDK tools](https://github.com/raspberrypi/pico-sdk-tools).
 
 ### Clone the repository
 ```
 git clone https://github.com/AlexLomas1/robot-controller
-cd robot-controller
 ```
 
 ### Build the project
 ```
+cd robot-controller
 mkdir build
 cd build
 cmake ..
 cmake --build . --config Release
 ```
-### Flash the compiled project into the Pico
-1. Navigate to the folder containing the picotool.exe file. Example:
-```
-cd example/path/picotool-2.0.0-64x-win/picotool
-```
-2. Connect the Pico to your device while holding down the BOOTSEL button.
-3. Load the generated .elf file into the Pico:
-```
-picotool.exe load c:/example/path/robot-controller/build/robot-controller.elf
-```
+
+### Load the compiled project into the Pico
+After running `cmake --build . --config Release`, a .uf2 file will be generated within the build folder of the project.
+1. Connect the Pico to your device while holding down the BOOTSEL button.
+2. Copy the generated .uf2 file into the new USB device that appears.
 
 ## Dependencies
 
