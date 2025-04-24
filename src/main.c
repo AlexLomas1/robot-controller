@@ -51,14 +51,18 @@ int main() {
                     drive_backwards();
                     break;
 
-                case 'c': // Change driving motors' speed
+                    case 'c': // Change driving motors' speed
                     received_value = uart_getc(uart0);
                     user_input_num = received_value - 48; // Converts ASCII '0'-'9' to integer 0-9.
-                    if (user_input_num >= 0 && user_input_num <= 9) { // Input validation
-                        /* Maps input value (0-9) to a motor speed (80-251). This covers most of the 
+                    if (user_input_num == 0) {
+                        uart_puts(uart0, "Stopping driving motors\n");
+                        driving_stop();
+                    }
+                    else if (user_input_num >= 1 && user_input_num <= 9) { // Input validation
+                        /* Maps input value (1-9) to a motor speed (81-249). This covers most of the 
                         effective motor speed range (0-255), as testing has shown that motor doesn't
                         run at speeds of below 80. */
-                        int new_speed = (user_input_num * 19) + 80;
+                        int new_speed = (user_input_num * 21) + 60;
                         uart_puts(uart0, "Changing speed \n");
                         set_motor_speed(new_speed);
                     }
