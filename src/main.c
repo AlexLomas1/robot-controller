@@ -74,11 +74,15 @@ int main() {
 
                 case 'r': // Turn right
                     received_value = uart_getc(uart0);
-                    user_input_num = received_value - 48; // Converts ASCII '0'-'8' to integer 0-8.
-                    if (user_input_num >= 0 && user_input_num <= 8) { // Input validation
+                    user_input_num = received_value - 48; // Converts ASCII '0'-'9' to integer 0-9.
+                    if (user_input_num == 0) {
+                        uart_puts(uart0, "Returning to neutral steering\n");
+                        centre_servo();
+                    }
+                    else if (user_input_num >= 1 && user_input_num <= 9) { // Input validation
                         uart_puts(uart0, "Turning right\n");
-                        // Steers to the right by the given number of steps of 11.25°.
-                        steer_right(user_input_num);
+                        // Steers to the right by the given number of 10° steps.
+                        steer_right(user_input_num); 
                     }
                     else {
                         uart_puts(uart0, "Invalid steering magnitude\n");
@@ -87,10 +91,14 @@ int main() {
                     
                 case 'l': // Turn left
                     received_value = uart_getc(uart0);
-                    user_input_num = received_value - 48; // Converts ASCII '0'-'8' to integer 0-8.
-                    if (user_input_num >= 0 && user_input_num <= 8) { // Input validation
+                    user_input_num = received_value - 48; // Converts ASCII '0'-'9' to integer 0-9.
+                    if (user_input_num == 0) {
+                        uart_puts(uart0, "Returning to neutral steering\n");
+                        centre_servo();
+                    }
+                    else if (user_input_num >= 1 && user_input_num <= 9) { // Input validation
                         uart_puts(uart0, "Turning left\n");
-                        // Steers to the left by the given number of steps of 11.25°.
+                        // Steers to the left by the given number of 10° steps.
                         steer_left(user_input_num);
                     }
                     else {
@@ -98,7 +106,7 @@ int main() {
                     }
                     break;
 
-                case 'm': // Centres servo
+                case 'm': // Centre servo
                     uart_puts(uart0, "Returning to neutral steering\n");
                     centre_servo();
                     break;
@@ -109,4 +117,4 @@ int main() {
             sleep_ms(250); // Delay to prevent multiple actions being attempted at once.
         }
     }
-}          
+}
